@@ -1,6 +1,8 @@
+
 //IMPORT
 const express = require('express');
 const contractRouter = express.Router();
+const Contract = require('../models/contracts.model');
 
 
 contractRouter.post("/contracts/add-contract", async (req,res)=>{
