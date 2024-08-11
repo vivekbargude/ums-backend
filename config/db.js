@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const colors = require('colors');
-const DB_URL = "mongodb://localhost:27017"
+const DB_URL = "mongodb://localhost:27017/ums"
 
 
 const connection = mongoose
