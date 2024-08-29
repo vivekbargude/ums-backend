@@ -8,7 +8,7 @@ const Contract = require('../models/contracts.model');
 contractRouter.post("/contracts/add-contract", async (req,res)=>{
 
     try{
-        console.log("error");
+        
         const {
             siteName, 
             contractType, 
