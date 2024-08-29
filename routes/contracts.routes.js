@@ -1,4 +1,5 @@
 
+
 //IMPORT
 const express = require('express');
 const contractRouter = express.Router();
@@ -99,4 +100,5 @@ contractRouter.get('/contracts/get-active-contracts', async (req, res) => {
 module.exports = contractRouter;
 
 
-module.exports = contractRouter;
+
+
