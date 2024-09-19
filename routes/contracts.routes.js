@@ -1,5 +1,4 @@
 
-
 //IMPORT
 const express = require('express');
 const contractRouter = express.Router();
