@@ -19,14 +19,14 @@ inventoryRouter.get('/categories', async (req, res) => {
 
 // Add a new product category
 inventoryRouter.post('/categories', async (req, res) => {
-  const { categoryName } = req.body;
+  const { categoryName,categorydesc, categoryImageUrl } = req.body;
   try {
-    const category = new ProductCategory({ categoryName });
+    const category = new ProductCategory({ categoryName,categorydesc, categoryImageUrl  });
     await category.save();
     res.status(201).json({
       success: true,
       message: 'Product category added successfully',
-      category
+      category : category
     });
   } catch (err) {
     res.status(400).json({ message: err.message });

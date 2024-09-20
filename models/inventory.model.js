@@ -28,6 +28,14 @@ const productCategorySchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    categorydesc : {
+        type: String,
+        required: true, 
+    },
+    categoryImageUrl : {
+        type: String,
+        required: true,
     }
 });
 
