@@ -123,6 +123,20 @@ const getInventory = async(req,res)=>{
   }
 }
 
+// Get all products in the inventory (regardless of category)
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find(); // Fetch all products from the database
+    res.status(200).json({
+      success: true,
+      products: products,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 module.exports = {
   getAllCategories,
   addCategory,
@@ -130,5 +144,6 @@ module.exports = {
   getProductsByCategory,
   addProductToCategory,
   deleteProductFromCategory,
-  getInventory
+  getInventory,
+  getAllProducts
 };
