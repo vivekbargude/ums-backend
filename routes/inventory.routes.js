@@ -5,7 +5,8 @@ const {
   deleteCategory,
   getProductsByCategory,
   addProductToCategory,
-  deleteProductFromCategory
+  deleteProductFromCategory,
+  getInventory
 } = require('../controllers/inventory.controller');
 
 const inventoryRouter = express.Router();
@@ -27,5 +28,7 @@ inventoryRouter.post('/categories/:categoryId/products', addProductToCategory);
 
 // Delete a product from a specific product category
 inventoryRouter.delete('/categories/:categoryId/products/:productId', deleteProductFromCategory);
+
+inventoryRouter.get('/inventory/analysis',getInventory);
 
 module.exports = inventoryRouter;

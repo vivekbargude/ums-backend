@@ -114,11 +114,21 @@ const deleteProductFromCategory = async (req, res) => {
   }
 };
 
+const getInventory = async(req,res)=>{
+  try{
+    const inventory = await Product.find();
+    res.status(200).json(inventory);
+  }catch(e){
+    res.status(500).json({message:e.message});
+  }
+}
+
 module.exports = {
   getAllCategories,
   addCategory,
   deleteCategory,
   getProductsByCategory,
   addProductToCategory,
-  deleteProductFromCategory
+  deleteProductFromCategory,
+  getInventory
 };
