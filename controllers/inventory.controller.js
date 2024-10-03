@@ -3,6 +3,8 @@ const { Product, ProductCategory } = require('../models/inventory.model');
 // Get all product categories
 const getAllCategories = async (req, res) => {
   try {
+    console.log("hit");
+    
     const categories = await ProductCategory.find();
     res.status(200).json({
       success: true,
