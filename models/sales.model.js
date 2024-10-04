@@ -18,6 +18,10 @@ const saleSchema = new mongoose.Schema({
     dateOfPurchase: {
         type: Date,
         default: Date.now
+    },
+    totalsales : {
+        type: Number,
+        required: true
     }
 });
 

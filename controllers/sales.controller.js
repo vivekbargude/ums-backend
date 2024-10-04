@@ -18,12 +18,17 @@ exports.createSale = async (req, res) => {
             return res.status(400).json({ error: 'Insufficient quantity in inventory' });
         }
 
+        const totalsales = product.price*quantitySold;
+
+
         // Create a new sale
         const sale = new Sale({
             buyerName,
             product: productId,
             quantitySold,
-            dateOfPurchase: dateOfPurchase || Date.now() // Use provided date or current date
+            dateOfPurchase: dateOfPurchase || Date.now(), // Use provided date or current date
+            totalsales 
+            
         });
 
         // Save the sale
@@ -68,6 +73,8 @@ exports.getAllProducts = async (req,res) => {
 
 exports.getSalesAnalysis = async (req, res) => {
     try {
+        console.log("hshdshsdahg");
+        
         const salesData = await Sale.aggregate([
             {
                 $group: {
