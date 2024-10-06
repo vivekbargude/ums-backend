@@ -24,7 +24,7 @@ exports.createSale = async (req, res) => {
         // Create a new sale
         const sale = new Sale({
             buyerName,
-            product: productId,
+            product: product.name,
             quantitySold,
             dateOfPurchase: dateOfPurchase || Date.now(), // Use provided date or current date
             totalsales 
@@ -48,7 +48,7 @@ exports.createSale = async (req, res) => {
 exports.getLatestSales = async (req, res) => {
     try {
         // Fetch the sales sorted by dateOfPurchase in descending order (latest first)
-        const latestSales = await Sale.find().sort({ dateOfPurchase: -1 });
+        const latestSales = await Sale.find().sort({ dateOfPurchase: -1 }).limit(10);
 
         res.status(200).json(latestSales);
     } catch (error) {
