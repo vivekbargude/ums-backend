@@ -6,61 +6,75 @@ const partySchema = new Schema({
     type: String,
     required: true,
   },
-  contactPerson: {
+  partyContact: {
     type: String,
     required: true,
   },
-  contactInformation: {
-    phoneNumber: String,
-    emailAddress: String,
-    mailingAddress: String,
-  },
-  role: {
-    type: String,
-    required: true,
-  },
-  signatoryAuthority: {
-    name: String,
-    title: String,
-  },
+  
+  // contactPerson: {
+  //   type: String,
+  //   required: true,
+  // },
+  // contactInformation: {
+  //   phoneNumber: String,
+  //   emailAddress: String || null,
+  //   // mailingAddress: String,
+  // },
+  // role: {
+  //   type: String,
+  //   required: true,
+  // },
+  // signatoryAuthority: {
+  //   name: String,
+  //   title: String,
+  // },
 });
 
 const contractSchema = new Schema({
-  siteName: {
-    type: String,
-    required: true,
-  },
   contractType: {
     type: String,
     enum: ['Government', 'Private'],
     required: true,
   },
-  contractID: {
+  contractName: {
     type: String,
-    unique: true,
-    sparse: true, // Unique, but optional for non-private contracts
-  },
-  status: {
-    type: String,
-    enum: ['Active', 'Inactive', 'Done'],
     required: true,
   },
+  duration: { type: String, required: true },
+  details: {
+    type: String,
+    required: true
+  },
+  additionalTerms:{
+    type: String,
+  },
+  // contractID: {
+  //   type: String,
+  //   unique: true,
+  //   sparse: true, // Unique, but optional for non-private contracts
+  // },
   effectiveDate: {
     type: Date,
     required: true,
   },
-  expirationDate: {
+  endDate: {
     type: Date,
-  },
-  contractTerm: {
-    type: String,
     required: true,
   },
-  renewalTerms: {
+  status: {
     type: String,
+    enum: ['Active', 'Inactive', 'Completed'],
+    required: true,
   },
-  partiesInvolved: {
-    type: [partySchema],
+  // contractTerm: {
+  //   type: String,
+  //   required: true,
+  // },
+  // renewalTerms: {
+  //   type: String,
+  // },
+  partyDetails: {
+    type: partySchema,
     validate: {
       validator: function (v) {
         // If contractType is 'Private', partiesInvolved must be non-empty

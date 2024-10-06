@@ -1,95 +1,102 @@
 const Contract = require('../models/contracts.model');
 
-async function handleCreateNewContract(req,res){
-    try{
-        console.log("error");
-        const {
-            siteName, 
-            contractType, 
-            contractID, 
-            status, 
-            effectiveDate, 
-            expirationDate, 
-            contractTerm, 
-            renewalTerms, 
-            partiesInvolved
-        } = req.body;
+// Create a new contract
+handleCreateNewContract = async (req, res) => {
+  try {
+    const { contractType, contractName, duration, details, additionalTerms, effectiveDate, endDate, status, partyDetails } = req.body;
 
-        // Check if partiesInvolved is provided for Private contracts
-        if (contractType === 'Private' && (!partiesInvolved || partiesInvolved.length === 0)) {
-            return res.status(400).json({
-                success: false,
-                message: 'Private contracts must include at least one party involved.',
-            });
-        }
+    const newContract = new Contract({
+      contractType,
+      contractName,
+      duration,
+      details,
+      additionalTerms,
+      effectiveDate,
+      endDate,
+      status,
+      partyDetails,
+    });
 
-        // Check if partiesInvolved is provided for Government contracts
-        if (contractType === 'Government' && (partiesInvolved && partiesInvolved.length > 0)) {
-            return res.status(400).json({
-                success: false,
-                message: 'Government contracts should not include parties involved.',
-            });
-        }
+    const savedContract = await newContract.save();
+    res.status(201).json({ message: 'Contract created successfully', contract: savedContract });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create contract', error });
+  }
+};
 
-        // Construct the contract data
-        const contractData = {
-            siteName,
-            contractType,
-            contractID,
-            status,
-            effectiveDate,
-            expirationDate,
-            contractTerm,
-            renewalTerms,
-        };
+// Get all contracts
+handleGetAllContracts = async (req, res) => {
+  try {
+    const contracts = await Contract.find();
+    res.status(200).json(contracts);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve contracts', error });
+  }
+};
 
-        // Set partiesInvolved only if it's a Private contract
-        if (contractType === 'Private') {
-            contractData.partiesInvolved = partiesInvolved;
-        }
-
-        // Creating a new contract
-        const newContract = new Contract(contractData);
-
-        // Save the contract to the database
-        await newContract.save();
-
-        res.status(201).json({
-            success: true,
-            message: 'Contract added successfully',
-            contract: newContract,
-        });
-
-    }catch(e){
-
-        res.status(500).json({
-            success : false ,
-            msg : e.message
-        });
+// Get a single contract by ID
+handleGetContractById = async (req, res) => {
+  try {
+    const contract = await Contract.findById(req.params.id);
+    if (!contract) {
+      return res.status(404).json({ message: 'Contract not found' });
     }
-}
+    res.status(200).json(contract);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve contract', error });
+  }
+};
 
+// Update a contract by ID
+handleUpdateContractById = async (req, res) => {
+  try {
+    const { contractType, contractName, duration, details, additionalTerms, effectiveDate, endDate, status, partyDetails } = req.body;
 
-async function handleGetActiveContracts (req, res) {
-    try {
-        // Retrieve only active contracts from the database
-        const activeContracts = await Contract.find({ status: 'Active' });
+    const updatedContract = await Contract.findByIdAndUpdate(
+      req.params.id,
+      {
+        contractType,
+        contractName,
+        duration,
+        details,
+        additionalTerms,
+        effectiveDate,
+        endDate,
+        status,
+        partyDetails,
+      },
+      { new: true } // Return the updated contract
+    );
 
-        // Respond with the active contracts
-        res.status(200).json({
-            success: true,
-            contracts: activeContracts,
-        });
-
-    } catch (e) {
-        // Handle any errors
-        res.status(500).json({
-            success: false,
-            msg: e.message,
-        });
+    if (!updatedContract) {
+      return res.status(404).json({ message: 'Contract not found' });
     }
-}
- 
-module.exports = {handleCreateNewContract,
-    handleGetActiveContracts,
-}
+
+    res.status(200).json({ message: 'Contract updated successfully', contract: updatedContract });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update contract', error });
+  }
+};
+
+// Delete a contract by ID
+handleDeleteContractById = async (req, res) => {
+  try {
+    const deletedContract = await Contract.findByIdAndDelete(req.params.id);
+
+    if (!deletedContract) {
+      return res.status(404).json({ message: 'Contract not found' });
+    }
+
+    res.status(200).json({ message: 'Contract deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete contract', error });
+  }
+};
+
+module.exports = {
+    handleCreateNewContract,
+    handleGetAllContracts,
+    handleGetContractById,
+    handleUpdateContractById,
+    handleDeleteContractById,
+};
