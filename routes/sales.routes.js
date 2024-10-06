@@ -12,4 +12,6 @@ router.get('/sales/products', saleController.getAllProducts);
 
 router.get('/sales/analysis', saleController.getSalesAnalysis);
 
+router.get('/todays-sales', saleController.getTodaysTotalSales);
+
 module.exports = router;

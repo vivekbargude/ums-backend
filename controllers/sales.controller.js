@@ -109,3 +109,31 @@ exports.getSalesAnalysis = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+exports.getTodaysTotalSales = async (req, res) => {
+    try {
+        // Get the current date
+        const today = new Date();
+        
+        // Get the start of today (midnight) and end of today (23:59:59)
+        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+        
+        // Find all sales that occurred today
+        const sales = await Sale.find({
+            dateOfPurchase: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        });
+
+        // Calculate total sales price for today
+        const totalSalesPrice = sales.reduce((total, sale) => {
+            return total + (sale.totalsales || 0); // Assuming totalsales is calculated and stored in each sale
+        }, 0);
+
+        res.status(200).json({ totalSalesPrice });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

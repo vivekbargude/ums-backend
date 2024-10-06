@@ -136,6 +136,25 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+const getTotalInventoryPrice = async (req, res) => {
+  try {
+    const products = await Product.find(); // Fetch all products from the database
+
+    // Calculate the total price of the inventory
+    const totalInventoryPrice = products.reduce((total, product) => {
+      return total + (product.price * product.quantity);
+    }, 0);
+
+    res.status(200).json({
+      success: true,
+      totalInventoryPrice: totalInventoryPrice,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 
 module.exports = {
   getAllCategories,
@@ -145,5 +164,6 @@ module.exports = {
   addProductToCategory,
   deleteProductFromCategory,
   getInventory,
-  getAllProducts
+  getAllProducts,
+  getTotalInventoryPrice
 };
