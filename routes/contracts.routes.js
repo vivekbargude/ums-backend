@@ -2,12 +2,13 @@
 //IMPORT
 const express = require('express');
 const contractRouter = express.Router();
-const {handleCreateNewContract, handleGetActiveContracts} = require("../controllers/contracts.controllers")
+const {handleCreateNewContract,
+    handleGetAllContracts,} = require("../controllers/contracts.controllers");
 
 
 contractRouter.post("/contracts/add-contract", handleCreateNewContract);
 
-contractRouter.get('/contracts/get-active-contracts',handleGetActiveContracts );
+contractRouter.get('/contracts/get-all-contracts',handleGetAllContracts );
 
 module.exports = contractRouter;
 
